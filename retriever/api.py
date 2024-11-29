@@ -2,8 +2,8 @@ from fastapi import FastAPI
 from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List, Tuple
-from kg_get_entity import encode_entity, get_entity_spacy, get_entity_embedding, get_content_embedding, get_entity_llm
-from kg_get_infor import get_infor_ent, get_infor_embedding, get_node_metapath, search_metapath, search_metapaths
+from retriever.pkg_get_entity import encode_entity, get_entity_spacy, get_entity_embedding, get_content_embedding, get_entity_llm
+from retriever.pkg_get_infor import get_infor_ent, get_infor_embedding, get_node_metapath, search_metapath, search_metapaths
 from get_all_infor import get_all_infor
 
 app = FastAPI()

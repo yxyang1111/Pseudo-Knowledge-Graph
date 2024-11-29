@@ -8,14 +8,20 @@ from tqdm import tqdm
 import re
 
 from sentence_transformers import SentenceTransformer
-model_path='/home/user/embeddings/bge_keyworkds_projectName_fields_tunning_v3'
+
+import sys
+sys.path.append("..//")
+from config.config import Embedding_model_path, neo4j_auth, neo4j_uri, Data_path
+
+
+model_path=Embedding_model_path
 model = SentenceTransformer(model_path)
 
 
-graph=Graph('http://localhost:7474',user='neo4j',password='s3cretPassword')
+graph=Graph(neo4j_uri ,user=neo4j_auth[0],password=neo4j_auth[1])
 node_matcher = NodeMatcher(graph)
 
-data_dir = '/home/user/test_retrieval/data/*.jsonl'
+data_dir = Data_path + "*.jsonl"
 for file_path in glob.glob(data_dir, recursive=True):
     print(file_path)
     with jsonlines.open(file_path, 'r') as reader:

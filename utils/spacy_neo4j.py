@@ -31,7 +31,7 @@ for file in glob.glob(path):
         print(lines)
         for line in tqdm(lines):
             print(line)
-            line_node=Node("TEXT",text=line) 
+            line_node=Node("TEXT",text=line)
             g.merge(line_node,"TEXT","text")
             if line!='':
                 doc=nlp(line)
@@ -43,7 +43,7 @@ for file in glob.glob(path):
                 print("===========================")
                 for ent in doc.ents:
                     print (ent.text, ent.label_)
-                    ent_node=Node(ent.label_,text=ent.text) 
+                    ent_node=Node(ent.label_,text=ent.text)
                     g.merge(ent_node,ent.label_,"text")
                     relation=Relationship(line_node,"include",ent_node)
                     g.create(relation)

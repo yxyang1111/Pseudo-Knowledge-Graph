@@ -2,7 +2,7 @@
 
 This is the implementation for the paper:
 
-Meta-Path Guided Retrieval and In-Graph Text for Enhanced LLM with Pseudo-Knowledge Graphs
+Pseudo-Knowledge Graph: Meta-Path Guided Retrieval and In-Graph Text for Enhanced LLM
 
 ### Overview
 

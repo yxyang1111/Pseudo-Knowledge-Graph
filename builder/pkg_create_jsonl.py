@@ -6,18 +6,18 @@ import re
 from sentence_transformers import SentenceTransformer
 from neo4j import GraphDatabase
 
-model_path = '/home/user/embeddings/bge_keyworkds_projectName_fields_tunning_v3'
+import sys
+sys.path.append("..//")
+from config.config import Embedding_model_path, neo4j_auth, neo4j_uri, Data_path
+
+model_path = Embedding_model_path
 model = SentenceTransformer(model_path)
 
-uri = "bolt://localhost:7687"
-#'http://localhost:7474'
-driver = GraphDatabase.driver(uri, auth=("neo4j", "s3cretPassword"))
+driver = GraphDatabase.driver(uri = neo4j_uri, auth = neo4j_auth)
 
-data_dir = '/home/user/test_retrieval/data/*.jsonl'
+data_dir = Data_path + "*.jsonl"
 for file_path in glob.glob(data_dir, recursive=True):
     print(file_path)
-    if file_path != '/home/user/test_retrieval/data/research_projects_v1.jsonl' and file_path != '/home/user/test_retrieval/data/paper_data_all.jsonl':
-        continue
     with jsonlines.open(file_path, 'r') as reader:
         for json_obj in tqdm(reader):
             with driver.session() as session:
@@ -40,7 +40,7 @@ for file_path in glob.glob(data_dir, recursive=True):
                     #     "MATCH (c:CONTENT) WHERE c.text = $text RETURN c",
                     #     text=json_obj['content']
                     # )
-                
+
                     # 创建元数据节点并建立关系
                     for key, value in json_obj['metadata'].items():
                         patterns = r'。|？|！|；|\r|;| '
@@ -54,9 +54,9 @@ for file_path in glob.glob(data_dir, recursive=True):
 
                         nodes_dict = {record['text']: record['n'] for record in existing_nodes}
 
- 
+
                         for item in items:
-                            
+
                             # query = f"MATCH (n:{label}) WHERE n.text = $text RETURN n"
                             # existing_node = session.run(
                             #     query,
@@ -80,6 +80,6 @@ for file_path in glob.glob(data_dir, recursive=True):
                                 text=json_obj['content'],
                                 item=item,
                             )
-                                
+
 
 driver.close()

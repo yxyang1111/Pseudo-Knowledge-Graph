@@ -8,16 +8,14 @@ from neo4j import GraphDatabase
 
 import sys
 sys.path.append("..//")
-from config.config import Embedding_model_path, neo4j_auth, neo4j_uri
+from config.config import Embedding_model_path, neo4j_auth, neo4j_uri, Data_path
 
 model_path = Embedding_model_path
 model = SentenceTransformer(model_path)
 
-driver = GraphDatabase.driver(uri = neo4j_uri , auth = neo4j_auth)
+driver = GraphDatabase.driver(uri = neo4j_uri, auth = neo4j_auth)
+
+data_dir = Data_path + "*.jsonl"
 with driver.session() as session:
-    query = """
-    MATCH (n)
-    WHERE n.text =~ '^[a-zA-Z]+$'
-    DETACH DELETE n
-    """
-    session.run(query)
+    query = "MATCH (n) WHERE n.text = $node_name REMOVE n.meta_path"
+    session.run(query, node_name="x")

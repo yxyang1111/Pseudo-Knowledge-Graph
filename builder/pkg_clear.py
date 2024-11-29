@@ -6,12 +6,15 @@ import re
 from sentence_transformers import SentenceTransformer
 from neo4j import GraphDatabase
 
-model_path = '/home/user/embeddings/bge_keyworkds_projectName_fields_tunning_v3'
+import sys
+sys.path.append("..//")
+from config.config import Embedding_model_path, neo4j_auth, neo4j_uri
+
+model_path = Embedding_model_path
 model = SentenceTransformer(model_path)
 
-uri = "bolt://localhost:7687"
-#'http://localhost:7474'
-driver = GraphDatabase.driver(uri, auth=("neo4j", "s3cretPassword"))
+
+driver = GraphDatabase.driver(uri = neo4j_uri, auth = neo4j_auth)
 with driver.session() as session:
     # 删除所有节点和关系
     session.run("MATCH (n) DETACH DELETE n")
