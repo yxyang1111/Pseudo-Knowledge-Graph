@@ -10,12 +10,13 @@ from builder.get_entity import get_entity
 
 import sys
 sys.path.append("..//")
-from config.config import Embedding_model_path, neo4j_auth, neo4j_uri, Data_path
+from config.config import Embedding_model_path, neo4j_auth, neo4j_uri, Data_path, patterns
 
 model_path = Embedding_model_path
 model = SentenceTransformer(model_path)
 
 driver = GraphDatabase.driver(uri = neo4j_uri, auth = neo4j_auth)
+
 
 data_dir = Data_path + "*.txt"
 for file_path in glob.glob(data_dir, recursive=True):
@@ -23,7 +24,7 @@ for file_path in glob.glob(data_dir, recursive=True):
     with open(file_path, 'r', encoding='utf-8', errors='ignore') as file_in:
         text = file_in.read()
         text=text.replace('\n','')
-        lines = re.split(patterns,text)
+        lines = re.split(patterns, text)
         with driver.session() as session:
             # 删除所有节点和关系
             #session.run("MATCH (n) DETACH DELETE n")
