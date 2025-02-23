@@ -8,7 +8,8 @@ import json
 from sentence_transformers import SentenceTransformer
 from neo4j import GraphDatabase
 import numpy as np
-
+import argparse
+import sys
 
 
 from retriever.pkg_get_entity import encode_entity, get_entity_spacy, get_entity_embedding, get_content_embedding, get_entity_llm
@@ -45,5 +46,10 @@ def get_all_infor(user_query, uri = neo4j_uri, auth = neo4j_auth):
     # print(all_infor)
     return all_infor
 
-user_query="Query?"
-print(get_all_infor(user_query))
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Retrieve information based on user query.")
+    parser.add_argument("user_query", type=str, help="The user query to process.")
+    args = parser.parse_args()
+
+    result = get_all_infor(args.user_query)
+    print(result)

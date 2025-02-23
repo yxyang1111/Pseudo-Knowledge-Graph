@@ -20,4 +20,8 @@ fi
 echo "Building the Pseudo-Knowledge Graph..."
 python builder/pkg_create_text.py
 
-echo "Build process completed successfully."
+# Retrieve information using all methods
+echo "Retrieving all information..."
+python retriever/get_all_information.py user_query
+
+echo "Run process completed successfully."
